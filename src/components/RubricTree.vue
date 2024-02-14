@@ -36,7 +36,9 @@ export default {
     fetchRubrics() {
       const apiUrl = `https://www.klerk.ru/yindex.php/v3/event/rubrics?allowEmpty=${this.showEmpty ? 1 : 0}`;
 
-      fetch(apiUrl)
+      fetch(apiUrl, {
+        mode: 'no-cors'
+      })
           .then(response => response.json())
           .then(data => {
             this.tree = data;
