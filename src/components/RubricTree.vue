@@ -11,7 +11,9 @@
 
 
     <tree-node v-for="rootNode in tree" :key="rootNode.id"
-               :node="rootNode" @update-total="updateTotal" ></tree-node>
+               :node="rootNode"
+               @update-total="updateTotal"
+    ></tree-node>
   </div>
 </template>
 
@@ -36,17 +38,16 @@ export default {
     fetchRubrics() {
       const apiUrl = `https://www.klerk.ru/yindex.php/v3/event/rubrics?allowEmpty=${this.showEmpty ? 1 : 0}`;
 
-      fetch(apiUrl, {
-        mode: 'no-cors'
-      })
+      const saveTotal = this.totalSelectedCount;
+
+      fetch(apiUrl)
           .then(response => response.json())
           .then(data => {
             this.tree = data;
-            this.totalSelectedCount = 0;
           });
     },
     updateTotal({ count }) {
-      this.totalSelectedCount += count;
+      this.totalSelectedCount + count < 0 ? this.totalSelectedCount = 0  : this.totalSelectedCount += count;
     }
   }
 };
