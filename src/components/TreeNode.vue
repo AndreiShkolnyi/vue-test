@@ -1,18 +1,32 @@
 <template>
   <div class="mb-4 mt-2 bg-gray-200 rounded-lg p-3 max-w-[370px] shadow-xl">
     <div class="flex gap-2">
-      <input type="checkbox" :disabled="isDisabled" v-model="isSelected" @change="toggleSelection(node, 'parent')">
-      <a :href="'https://www.klerk.ru' + node.url" target="_blank">{{ node.title }}</a>
+      <input type="checkbox"
+             :disabled="isDisabled"
+             v-model="isSelected"
+             @change="toggleSelection(node, 'parent')">
+      <a
+          :href="'https://www.klerk.ru' + node.url"
+          target="_blank">
+        {{ node.title }}
+      </a>
       ({{ node.count }} - {{ totalCount }})
-      <span v-if="hasChildren" @click="toggleNode" style="cursor: pointer;">
+      <span
+          v-if="hasChildren"
+          @click="toggleNode"
+          style="cursor: pointer;">
         {{ isOpen ? '[↑]' : '[↓]' }}
       </span>
     </div>
     <div v-if="isOpen && hasChildren">
-      <tree-node v-for="child in node.children" :key="child.id"
-                 :child-selected="isChecked"
-                 :parent-selected="isSelected"
-                 :node="child" @update-total="toggleSelection(child, 'child')"></tree-node>
+      <tree-node
+          v-for="child in node.children"
+          :key="child.id"
+          :parent-selected="isSelected"
+          :node="child"
+          @update-total="toggleSelection(child, 'child')">
+
+      </tree-node>
     </div>
   </div>
 </template>
@@ -24,7 +38,6 @@ export default {
     return {
       isOpen: false,
       isSelected: false,
-      isChecked: false,
       childrenCount: [],
     };
   },
@@ -41,14 +54,6 @@ export default {
     isDisabled() {
       return this.parentSelected;
     },
-    isChecked: {
-      get() {
-        return this.childSelected;
-      },
-      set(newValue) {
-        this.childSelected = newValue;
-      }
-    }
   },
   watch: {
     parentSelected: function (newVal) {
